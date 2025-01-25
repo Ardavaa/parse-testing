@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PDF Parser</title>
+    <style>
+        #drop-zone {
+            width: 400px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            text-align: center;
+            padding: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Liat Console.log buat liat hasil Parsed Content</h1>
+    <div id="drop-zone">Drag & Drop PDF Here</div>
+    <div id="result"></div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const resultDiv = document.getElementById('result');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = 'green';
+        });
+
+        dropZone.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#ccc';
+
+            const file = e.dataTransfer.files[0];
+            if (!file || file.type !== 'application/pdf') {
+                alert('Please upload a PDF file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('pdf', file);
+
+            try {
+                const response = await fetch('/parse-pdf', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.content) {
+                    console.log('Parsed Content:\n' + data.content.join('\n'));
+                    resultDiv.textContent = data.content.join('\n');
+                } else if (data.error) {
+                    console.error('Error:', data.error);
+                    resultDiv.textContent = 'Error: ' + data.error;
+                }
+
+            } catch (err) {
+                console.error('Network Error:', err);
+                resultDiv.textContent = 'Network Error';
+            }
+        });
+    </script>
+</body>
+
+</html>
