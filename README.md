@@ -1,5 +1,3 @@
-# llama-parsing-dummy
-
 ## Installation
 
 ### Prerequisites
@@ -23,7 +21,7 @@
 3. **Activate** the vitual environments
     ```bash
     source env/Scripts/active
-    ```dotnetcli
+    ```
     
     or
     ```bash
@@ -43,5 +41,4 @@ You need to get an API key from [LlamaIndex Cloud](https://cloud.llamaindex.ai/)
     After installing dependencies, you can start the application by running:
     ```bash
     python app.py
-    ```# parse-testing
-# parse-testing
+    ```
